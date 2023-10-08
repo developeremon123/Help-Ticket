@@ -44,4 +44,14 @@
             </x-primary-button>
         </div>
     </form>
+    <form method="POST" action="{{ route('git.log') }}">
+        @csrf
+        <div class="flex items-center justify-end mt-4">
+
+            <x-primary-button class="ml-3">
+                {{ __('Log in with github') }}
+            </x-primary-button>
+        </div>
+        </div>
+    </form>
 </x-guest-layout>
