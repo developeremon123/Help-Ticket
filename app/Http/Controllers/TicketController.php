@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreTicketRequest;
 use App\Http\Requests\UpdateTicketRequest;
 
@@ -29,7 +32,20 @@ class TicketController extends Controller
      */
     public function store(StoreTicketRequest $request)
     {
-        //
+        $ticket = Ticket::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'user_id' => auth()->id(),
+        ]);
+        if ($request->hasFile('attachment')) {
+            $ext = $request->file('attachment')->getClientOriginalExtension();
+            $filename = Str::random(25).'.'.$ext;
+            $path = "public/attachment";
+            $ticket->update(['attachment' => $filename]);
+            $request->file('attachment')->storeAs($path, $filename);
+        }
+
+        return response($ticket);
     }
 
     /**
