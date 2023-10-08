@@ -17,8 +17,12 @@
                     </x-nav-link>
                 </div>
             </div>
+            <div class="flex items-end justify-end mt-4">
 
-            <!-- Settings Dropdown -->
+                <a href="{{ route('ticket.create') }}" class="ml-3 text-gray-500 dark:text-gray-400 rounded-lg p-2">
+                    {{ __('Support Ticket') }}
+                </a>
+            </div>
             <div class="hidden sm:flex sm:items-center sm:ml-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
