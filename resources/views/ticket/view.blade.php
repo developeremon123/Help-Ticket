@@ -10,6 +10,16 @@
                     <a href="{{ "/storage/attachment/".$ticket->attachment }}" target="_blank">Attachment</a>
                 @endif
             </div>
+            <div class="flex mt-2">
+                <a href="{{ route('ticket.edit',$ticket->id) }}">
+                    <x-primary-button>Edit</x-primary-button>
+                </a>
+                <form action="{{ route('ticket.destroy',$ticket->id) }}" method="post" class="ml-2">
+                    @csrf
+                    @method('DELETE')
+                    <x-primary-button>Delete</x-primary-button>
+                </form>
+            </div>
         </div>
     </div>
 </x-app-layout>
