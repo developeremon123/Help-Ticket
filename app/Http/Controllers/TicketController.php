@@ -65,11 +65,9 @@ class TicketController extends Controller
      */
     public function update(UpdateTicketRequest $request, Ticket $ticket)
     {
-        $ticket->update([
-            'title' => $request->title,
-            'description' => $request->description,
-        ]);
-        if ($request->hasFile('attachment')) {
+        // dd($request->except('attachment'));
+        $ticket->update($request->except('attachment'));
+        if ($request->file('attachment')) {
             $currentAttachment = $ticket->attachment;
             if ($currentAttachment) {
                 $currentAttachmentPath = storage_path("app/public/attachment/{$currentAttachment}");

@@ -22,8 +22,9 @@ class UpdateTicketRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title'       => 'bail|required|string',
-            'description' => 'bail|required|string',
+            'title'       => 'bail|string',
+            'description' => 'bail|string',
+            'status'      => 'bail|string|in:open,resolved,reject',
             'attachment'  => 'bail|sometimes|file|mimes:png,jpg,jpeg,pdf',
         ];
     }

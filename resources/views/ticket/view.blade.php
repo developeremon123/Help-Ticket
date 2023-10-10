@@ -7,19 +7,39 @@
                 <p>{{ $ticket->description }}</p>
                 <p>{{ $ticket->created_at->diffForHumans() }}</p>
                 @if ($ticket->attachment)
-                    <a href="{{ "/storage/attachment/".$ticket->attachment }}" target="_blank">Attachment</a>
+                    <a href="{{ '/storage/attachment/' . $ticket->attachment }}" target="_blank">Attachment</a>
                 @endif
             </div>
-            <div class="flex mt-2">
-                <a href="{{ route('ticket.edit',$ticket->id) }}">
-                    <x-primary-button>Edit</x-primary-button>
-                </a>
-                <form action="{{ route('ticket.destroy',$ticket->id) }}" method="post" class="ml-2">
-                    @csrf
-                    @method('DELETE')
-                    <x-primary-button>Delete</x-primary-button>
-                </form>
+            <div class="flex justify-between">
+                <div class="flex mt-2">
+                    <a href="{{ route('ticket.edit', $ticket->id) }}">
+                        <x-primary-button>Update</x-primary-button>
+                    </a>
+                    <form action="{{ route('ticket.destroy', $ticket->id) }}" method="post" class="ml-2">
+                        @csrf
+                        @method('DELETE')
+                        <x-primary-button>Delete</x-primary-button>
+                    </form>
+                </div>
+                @if (auth()->user()->isAdmin)
+                    <div class="flex mt-2">
+                        <form action="{{ route('ticket.update', $ticket->id) }}" method="post">
+                            @csrf
+                            @method('PATCH')
+                            <input type="hidden" name="status" value="resolved">
+                            <x-primary-button>Resolve</x-primary-button>
+                        </form>
+                        <form action="{{ route('ticket.update', $ticket->id) }}" method="post">
+                            @csrf
+                            @method('PATCH')
+                            <input type="hidden" name="status" value="reject">
+                            <x-primary-button class="ml-2">Reject</x-primary-button>
+                        </form>
+                    @else
+                        <p class="text-white">Status: {{ $ticket->status }}</p>
+                @endif
             </div>
         </div>
+    </div>
     </div>
 </x-app-layout>
