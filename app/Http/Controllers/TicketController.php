@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreTicketRequest;
 use App\Http\Requests\UpdateTicketRequest;
+use App\Models\User;
+use App\Notifications\TicketUpdateNotification;
 use GuzzleHttp\Psr7\Request;
 
 class TicketController extends Controller
@@ -67,6 +69,12 @@ class TicketController extends Controller
     {
         // dd($request->except('attachment'));
         $ticket->update($request->except('attachment'));
+        if ($request->has('status')) {
+            $user = User::find($ticket->user_id);
+            // $user->notify(new TicketUpdateNotification($ticket));
+
+            return (new TicketUpdateNotification($ticket))->toMail($user);
+        }
         if ($request->file('attachment')) {
             $currentAttachment = $ticket->attachment;
             if ($currentAttachment) {
